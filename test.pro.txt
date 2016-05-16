@@ -1,0 +1,67 @@
+-optimizationpasses5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+-verbose
+-optimizations
+ !code/simplification/arithmetic,!field/*,!class/merging/*
+ 
+-keeppublic class *extends android.app.Activity
+-keeppublic class *extends android.app.Application
+-keeppublic class *extends android.app.Service
+-keeppublic class *extends android.content.BroadcastReceiver
+-keeppublic class *extends android.content.ContentProvider
+-keeppublic class *extends android.app.backup.BackupAgentHelper
+-keeppublic class *extends android.preference.Preference
+-keeppublic class com.android.vending.licensing.ILicensingService
+ 
+-keepclasseswithmembernamesclass *
+ {
+    native <methods>;
+}
+ 
+-keepclasseswithmembersclass *
+ {
+    public <init>(android.content.Context,
+ android.util.AttributeSet);
+}
+ 
+-keepclasseswithmembersclass *
+ {
+    public <init>(android.content.Context,
+ android.util.AttributeSet, int);
+}
+ 
+-keepclassmembersclass *extends android.app.Activity
+ {
+   public void *(android.view.View);
+}
+ 
+-keepclassmembersenum *
+ {
+    public static **[]
+ values();
+    public static **
+ valueOf(java.lang.String);
+}
+ 
+-keepclass *implements android.os.Parcelable
+ {
+  public static final android.os.Parcelable$Creator
+ *;
+}
+
+-optimizations
+ !code/simplification/arithmetic,!field/*,!class/merging/*
+ 
+-outjars'/Users/guang/Documents/workspace/QingDewAd/bin/qingdewad1.0.jar'
+-injars'/Users/guang/Documents/workspace/QingDewAd/bin/qingdewad.jar'
+
+-libraryjars'/Users/guang/Documents/workspace/QingDewAd/libs/android-support-v4.jar'
+-libraryjars'/Users/guang/Documents/workspace/QingDewAd/libs/asmack.jar'
+
+-keeppublic class com.qinglu.QLAdController
+ {
+    public <fields>;
+    public <methods>;
+}
