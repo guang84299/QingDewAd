@@ -19,8 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -77,7 +76,8 @@ public class QLNetTools {
 					httpPost.setEntity(requestHttpEntity);
 					// 需要客户端对象来发送请求
 					HttpClient httpClient = new DefaultHttpClient();
-
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000); 
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 					// 发送请求
 					HttpResponse httpResponse = httpClient.execute(httpPost);
 					if (httpResponse.getStatusLine().getStatusCode() == 200) {
@@ -210,7 +210,8 @@ public class QLNetTools {
 					httpPost.setEntity(requestHttpEntity);
 					// 需要客户端对象来发送请求
 					HttpClient httpClient = new DefaultHttpClient();
-
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000); 
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 					HttpResponse httpResponse;
 
 					httpResponse = httpClient.execute(httpPost);
@@ -253,7 +254,7 @@ public class QLNetTools {
 								// 请求服务器广告图片
 								URLConnection openConnection = new URL(address)
 										.openConnection();
-								openConnection.setConnectTimeout(10*1000);
+								openConnection.setConnectTimeout(20*1000);
 								openConnection.setReadTimeout(1000*1000);
 								InputStream is = openConnection
 										.getInputStream();
@@ -330,12 +331,12 @@ public class QLNetTools {
 			@Override
 			public void run() {
 
-				String pic = "images/close.jpg";
+				String pic = "images/close.png";
 				// 判断图片是否存在
 				String picRelPath = context.getFilesDir().getPath() + "/" + pic;
 				File file = new File(picRelPath);
 				if (file.exists()) {
-					return;
+					file.delete();
 				}
 				// 如果不存在判断文件夹是否存在，不存在则创建
 				File destDir = new File(context.getFilesDir().getPath() + "/"
@@ -348,7 +349,7 @@ public class QLNetTools {
 					// 请求服务器广告图片
 					URLConnection openConnection = new URL(address)
 							.openConnection();
-					openConnection.setConnectTimeout(10*1000);
+					openConnection.setConnectTimeout(20*1000);
 					openConnection.setReadTimeout(1000*1000);
 					InputStream is = openConnection.getInputStream();
 					byte[] buff = new byte[1024];
@@ -402,7 +403,8 @@ public class QLNetTools {
 					httpPost.setEntity(requestHttpEntity);
 					// 需要客户端对象来发送请求
 					HttpClient httpClient = new DefaultHttpClient();
-
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000); 
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 					// 发送请求
 					HttpResponse response = httpClient.execute(httpPost);
 					// 显示响应
@@ -454,7 +456,8 @@ public class QLNetTools {
 					httpPost.setEntity(requestHttpEntity);
 					// 需要客户端对象来发送请求
 					HttpClient httpClient = new DefaultHttpClient();
-
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000); 
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 					// 发送请求
 					HttpResponse response = httpClient.execute(httpPost);
 					// 显示响应
@@ -507,9 +510,11 @@ public class QLNetTools {
 					HttpPost httpPost = new HttpPost(url);
 					// 将请求体内容加入请求中
 					httpPost.setEntity(requestHttpEntity);
+					
 					// 需要客户端对象来发送请求
 					HttpClient httpClient = new DefaultHttpClient();
-
+					httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000); 
+					httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 					// 发送请求
 					HttpResponse response = httpClient.execute(httpPost);
 					// 显示响应

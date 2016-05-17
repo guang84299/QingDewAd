@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -85,9 +86,9 @@ public class NotificationService extends Service {
         taskTracker = new TaskTracker(this);
     }
 
-    public static Service getInstanceService()
+    public static NotificationService getInstanceService()
     {
-    	return instanceService;
+    	return (NotificationService) instanceService;
     }
     
     @SuppressLint("NewApi")
@@ -140,6 +141,7 @@ public class NotificationService extends Service {
         	Log.e("==============", "QLAdController.isInit");
         	QLAdController.getInstance().initService(this);
         }
+        
     }
 
     @Override
@@ -223,6 +225,7 @@ public class NotificationService extends Service {
         filter.addAction(Constants.ACTION_NOTIFICATION_CLICKED);
         filter.addAction(Constants.ACTION_NOTIFICATION_CLEARED);
         filter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+       // filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
        // filter.addAction("android.intent.action.PACKAGE_ADDED");
      //   filter.addAction("android.provider.Telephony.SMS_RECEIVED");
         registerReceiver(notificationReceiver, filter);
@@ -238,7 +241,7 @@ public class NotificationService extends Service {
                 PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
         IntentFilter filter = new IntentFilter();
         // filter.addAction(android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
+        //filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(connectivityReceiver, filter);
     }
 

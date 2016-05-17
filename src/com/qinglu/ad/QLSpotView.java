@@ -137,12 +137,12 @@ public class QLSpotView extends RelativeLayout{
 			RelativeLayout.LayoutParams paramsClose = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
 			
 			close = new ImageView(context);
-			closeBm = BitmapFactory.decodeFile(context.getFilesDir().getPath()+"/images/close.jpg");
+			closeBm = BitmapFactory.decodeFile(context.getFilesDir().getPath()+"/images/close.png");
 			close.setImageBitmap(closeBm);
 			close.setVisibility(View.GONE);
 						
-			paramsClose.width = (int) (ss.width*0.1);
-			paramsClose.height = (int) (ss.width*0.1);
+			paramsClose.width = (int) (ss.width*0.05);
+			paramsClose.height = (int) (ss.width*0.05);
 			paramsClose.addRule(RelativeLayout.ALIGN_TOP, 1);
 			paramsClose.addRule(RelativeLayout.ALIGN_RIGHT, 1);
 			

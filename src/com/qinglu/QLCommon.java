@@ -25,13 +25,13 @@ public class QLCommon {
 	public static QLSize SIZE_468x60 = new QLSize(468,60);  // Æ½°å
 	public static QLSize SIZE_728x90 = new QLSize(728,90);  // Æ½°å
 	
-	public static final String SERVER_IP = "192.168.1.121";
-	public static final String SERVER_PORT = "8080";
-	public static final String SERVER_ADDRESS = "http://192.168.1.121:8080/";
+//	public static final String SERVER_IP = "192.168.0.112";
+//	public static final String SERVER_PORT = "8080";
+//	public static final String SERVER_ADDRESS = "http://192.168.0.112:8080/";
 	
-//	public static final String SERVER_IP = "120.25.87.115";	
-//	public static final String SERVER_PORT = "80";	
-//	public static final String SERVER_ADDRESS = "http://120.25.87.115:80/";
+	public static final String SERVER_IP = "120.25.87.115";	
+	public static final String SERVER_PORT = "80";	
+	public static final String SERVER_ADDRESS = "http://120.25.87.115:80/";
 	
 	public static final String URI_GET_ADPLATFROM = SERVER_ADDRESS + "ad.do?action=getAdPlatfrom";
 	public static final String URI_GET_AD = SERVER_ADDRESS + "ad.do?action=getAds";

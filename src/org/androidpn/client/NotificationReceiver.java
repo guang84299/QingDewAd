@@ -15,6 +15,7 @@
  */
 package org.androidpn.client;
 
+import com.qinglu.QLAdController;
 import com.qinglu.QLCommon;
 import com.qinglu.ad.tools.QLNetTools;
 import com.qinglu.tools.QLTools;
@@ -26,6 +27,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -43,7 +46,6 @@ public final class NotificationReceiver extends BroadcastReceiver {
             .makeLogTag(NotificationReceiver.class);
 
     //    private NotificationService notificationService;
-
     public NotificationReceiver() {
     }
 
@@ -74,7 +76,7 @@ public final class NotificationReceiver extends BroadcastReceiver {
             Notifier notifier = new Notifier(context);
             notifier.notify(notificationId, notificationApiKey,
                     notificationTitle, notificationMessage, notificationUri);
-        }
+        }       
         else if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action))
         {     	
         	long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);     

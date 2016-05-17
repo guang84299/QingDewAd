@@ -38,12 +38,11 @@ public class ReconnectionThread extends Thread {
 
     public void run() {
         try {
-            while (!isInterrupted()) {
-                Log.d(LOGTAG, "Trying to reconnect in " + waiting()
-                        + " seconds");
+            if (!xmppManager.isRecconSuccess) {             
+                Log.e("===============", "ReconnectionThread"+waiting() + "  num="+waiting);
                 Thread.sleep((long) waiting() * 1000L);
-                xmppManager.connect();
-                waiting++;
+                xmppManager.connect();      
+                waiting++;                
             }
         } catch (final InterruptedException e) {
             xmppManager.getHandler().post(new Runnable() {
@@ -55,12 +54,7 @@ public class ReconnectionThread extends Thread {
     }
 
     private int waiting() {
-        if (waiting > 20) {
-            return 600;
-        }
-        if (waiting > 13) {
-            return 300;
-        }
-        return waiting <= 7 ? 10 : 60;
+        
+        return 20;
     }
 }

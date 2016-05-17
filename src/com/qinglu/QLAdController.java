@@ -18,6 +18,7 @@ public class QLAdController {
 	private static QLAdManager manager;
 	private static QLSpotManager spotManager;
 	private static QLOffersManager offersManager;
+	private static ServiceManager serviceManager;
 	private static int CurrPlatform = 0;
 	private static boolean testModel;
 	private static int notifiIcon;
@@ -56,6 +57,7 @@ public class QLAdController {
         serviceManager.setNotificationIcon(notifiIcon);
         serviceManager.startService();	
         
+        this.serviceManager = serviceManager;
         QLAdController.getQLAdManager(con);
 	}
 	
@@ -122,6 +124,11 @@ public class QLAdController {
 	public Context getContext()
 	{
 		return con;
+	}
+	
+	public ServiceManager getServiceManager()
+	{
+		return serviceManager;
 	}
 	
 	//ÇÐ»»¹ã¸æ

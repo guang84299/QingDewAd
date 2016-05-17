@@ -37,7 +37,7 @@ public class PersistentConnectionListener implements ConnectionListener {
 
     @Override
     public void connectionClosed() {
-        Log.d(LOGTAG, "connectionClosed()...");
+        Log.e(LOGTAG, "connectionClosed()...");
     }
 
     @Override

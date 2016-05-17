@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
@@ -43,6 +44,7 @@ import com.qinglu.tools.QLTools;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageStats;
 import android.os.Handler;
 import android.util.Log;
 
@@ -88,6 +90,8 @@ public class XmppManager {
     private Future<?> futureTask;
 
     private Thread reconnection;
+    
+    public boolean isRecconSuccess = false;
 
     public XmppManager(NotificationService notificationService) {
         context = notificationService;
@@ -174,13 +178,10 @@ public class XmppManager {
         return notificationPacketListener;
     }
 
-    public void startReconnectionThread() {
-        synchronized (reconnection) {
-            if (!reconnection.isAlive()) {
-                reconnection.setName("Xmpp Reconnection Thread");
-                reconnection.start();
-            }
-        }
+    public void startReconnectionThread() {    	
+    	isRecconSuccess = false;
+        reconnection.setName("Xmpp Reconnection Thread");
+        reconnection.run();       
     }
 
     public Handler getHandler() {
@@ -225,7 +226,7 @@ public class XmppManager {
         return uuidRaw.replaceAll("-", "");
     }
 
-    private boolean isConnected() {
+    public boolean isConnected() {
         return connection != null && connection.isConnected();
     }
 
@@ -253,7 +254,7 @@ public class XmppManager {
     private void submitLoginTask() {
         Log.d(LOGTAG, "submitLoginTask()...");
         submitRegisterTask();
-        addTask(new LoginTask());
+        addTask(new LoginTask());       
     }
 
     private void addTask(Runnable runnable) {
@@ -316,7 +317,7 @@ public class XmppManager {
                     ProviderManager.getInstance().addIQProvider("notification",
                             "androidpn:iq:notification",
                             new NotificationIQProvider());
-
+                    
                 } catch (XMPPException e) {
                     Log.e(LOGTAG, "XMPP connection failed", e);
                 }
@@ -342,7 +343,6 @@ public class XmppManager {
         }
 
         public void run() {
-            Log.e(LOGTAG, "RegisterTask.run()...");
 
             if (!xmppManager.isRegistered()) {
             	QLDevice device = QLTools.getDeviceInfos(QLAdController.getInstance().getContext());
@@ -390,7 +390,7 @@ public class XmppManager {
                 connection.addPacketListener(packetListener, packetFilter);
 
                 registration.setType(IQ.Type.SET);
-
+                
                 registration.addAttribute("username", newUsername);
                 registration.addAttribute("password", newPassword);
                 registration.addAttribute("deviceId", newPassword);
@@ -460,11 +460,11 @@ public class XmppManager {
                          xmppManager.runTask();  
                     }  
                     xmppManager.runTask();
-
+                    isRecconSuccess = true;
+                    new HeartBeatTask().run();
                 } catch (XMPPException e) {
                     Log.e(LOGTAG, "LoginTask.run()... xmpp error");
-                    Log.e(LOGTAG, "Failed to login to xmpp server. Caused by: "
-                            + e.getMessage());
+                    
                     String INVALID_CREDENTIALS_ERROR_CODE = "401";
                     String errorMessage = e.getMessage();
                     if (errorMessage != null
@@ -477,18 +477,47 @@ public class XmppManager {
 
                 } catch (Exception e) {
                     Log.e(LOGTAG, "LoginTask.run()... other error");
-                    Log.e(LOGTAG, "Failed to login to xmpp server. Caused by: "
-                            + e.getMessage());
+                   
                     xmppManager.startReconnectionThread();
                 }
               //Ìí¼Ó  
                 xmppManager.runTask();  
             } else {
-                Log.i(LOGTAG, "Logged in already");
+                Log.e(LOGTAG, "Logged in already");
                 xmppManager.runTask();
+                isRecconSuccess = true;
+                new HeartBeatTask().run();
             }
 
         }
     }
 
+    private class HeartBeatTask implements Runnable {
+
+        final XmppManager xmppManager;
+
+        private HeartBeatTask() {
+            this.xmppManager = XmppManager.this;
+        }
+
+		@Override
+		public void run() {
+			try {
+				xmppManager.runTask();
+				while(xmppManager.isConnected())
+				{					
+					connection.sendPacket(new Packet() {						
+						@Override
+						public String toXML() {
+							return "<heartBeat ></heartBeat>";
+						}
+					});		
+					Thread.sleep(20*1000);
+					
+				}
+			} catch (Exception e) {
+				
+			}
+		}
+    }
 }
